@@ -27,6 +27,7 @@ repositories {
 
 extra["springCloudVersion"] = "2025.1.0"
 dependencies {
+    implementation("org.springframework.cloud:spring-cloud-starter-bootstrap")
     implementation("org.springframework.cloud:spring-cloud-starter-config")
     implementation("org.springframework.boot:spring-boot-starter-restclient")
     implementation("org.springframework.boot:spring-boot-starter-webmvc")

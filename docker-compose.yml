@@ -1,17 +1,20 @@
 services:
-
   service-a:
     build: ./service-a
     mem_limit: 512m
     environment:
-      - SPRING_PROFILES_ACTIVE=docker,nodb,nomessaging
+      - SPRING_PROFILES_ACTIVE=docker
       - CONFIG_SERVER_USR=${CONFIG_SERVER_USR}
       - CONFIG_SERVER_PWD=${CONFIG_SERVER_PWD}
-    # removed depends_on for mysql and rabbitmq
+    depends_on:
+      config-server:
+        condition: service_healthy  # Ensures service-a waits for the healthcheck to pass
 
   config-server:
     build: ./config-server
     mem_limit: 512m
+    ports:
+      - "8888:8888"
     environment:
       - SPRING_PROFILES_ACTIVE=docker,native
       - ENCRYPT_KEY=${CONFIG_SERVER_ENCRYPT_KEY}
@@ -19,3 +22,10 @@ services:
       - SPRING_SECURITY_USER_PASSWORD=${CONFIG_SERVER_PWD}
     volumes:
       - ./config-repo:/config-repo
+    healthcheck:
+      # Fix: The test command must be a valid list or string, and indentation matters
+      test: ["CMD", "curl", "-f", "http://localhost:8888/actuator/health"]
+      interval: 5s   # Reduced interval for faster startup during dev
+      timeout: 5s
+      retries: 5
+      start_period: 10s # Gives the JVM time to warm up before failing checks
