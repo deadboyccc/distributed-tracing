@@ -1,4 +1,8 @@
-test.demo.property1: "Value from application.yml"
+test:
+  demo:
+    property1: "Value from application.yml"
+    encrypted: "{cipher}43bf410c2e0c0056edb8f270792d187cf6b4233e90faf29f6a72c644379e4d4590bbece8eafbd6247f198c45840b6125"
+
 logging:
   level:
-    dev.dead: "trace"
+    dev.dead: TRACE

@@ -13,13 +13,16 @@ public class ServiceAApplication {
 
     public static void main(String[] args) {
         ApplicationContext context = SpringApplication.run(ServiceAApplication.class, args);
-
         String repoPath = context.getEnvironment().getProperty("test.demo" +
                 ".property1");
-        log.info("repoPath: {}", repoPath);
+        String encrypted = context.getEnvironment().getProperty("test.demo.encrypted");
+        log.info("Config Server started! Looking demo property: {}", repoPath);
+        log.info("Config Server started! Looking encrypted property: {}", encrypted);
     }
 
-}
+    }
+
+
 @RestController
 class ServiceAController {
     @GetMapping

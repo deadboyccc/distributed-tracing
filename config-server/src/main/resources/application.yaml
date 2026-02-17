@@ -1,14 +1,23 @@
 spring:
   application:
     name: config-server
+  # ADDED: This tells the Config Server to load its own properties from the repo
+  config:
+    import: "optional:file:/config-repo/application.yml"
+
 server.port: 8888
-spring.cloud.config.server.native.searchLocations: file:${PWD}/
-  config-repo
+
+spring.cloud.config.server.native.searchLocations: file:${PWD}/config-repo
+
 management.endpoint.health.show-details: "ALWAYS"
 management.endpoints.web.exposure.include: "*"
+
 logging:
-level:
-root: info
+  level:
+    root: info
+
 ---
 spring.config.activate.on-profile: docker
 spring.cloud.config.server.native.searchLocations: file:/config-repo
+# ADDED: Ensuring it looks in the correct Docker path for its own import
+spring.config.import: "optional:file:/config-repo/application.yml"

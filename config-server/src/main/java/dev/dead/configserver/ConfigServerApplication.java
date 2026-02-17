@@ -18,7 +18,9 @@ public class ConfigServerApplication {
 
         String repoPath = context.getEnvironment().getProperty("test.demo" +
                 ".property1");
+        String encrypted = context.getEnvironment().getProperty("test.demo.encrypted");
         log.info("Config Server started! Looking demo property: {}", repoPath);
+        log.info("Config Server started! Looking encrypted property: {}", encrypted);
     }
 
 }
