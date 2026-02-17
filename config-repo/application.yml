@@ -1,0 +1,4 @@
+test.demo.property1: "Value from application.yml"
+logging:
+  level:
+    dev.dead: "trace"
