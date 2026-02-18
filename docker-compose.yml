@@ -1,6 +1,8 @@
 services:
   service-a:
     build: ./service-a
+    ports:
+      - "8080:8080"
     mem_limit: 512m
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -9,6 +11,20 @@ services:
     depends_on:
       config-server:
         condition: service_healthy  # Ensures service-a waits for the healthcheck to pass
+
+  service-b:
+    build: ./service-b
+    ports:
+      - "8081:8081"
+    mem_limit: 512m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - CONFIG_SERVER_USR=${CONFIG_SERVER_USR}
+      - CONFIG_SERVER_PWD=${CONFIG_SERVER_PWD}
+    depends_on:
+      config-server:
+        condition: service_healthy  # Ensures service-a waits for the healthcheck to pass
+
 
   config-server:
     build: ./config-server

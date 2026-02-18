@@ -7,3 +7,4 @@ rootProject.name = "distributed-tracing"
 
 include("service-a")
 include("config-server")
+include("service-b")
