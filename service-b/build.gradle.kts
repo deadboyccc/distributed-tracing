@@ -23,6 +23,8 @@ extra["springCloudVersion"] = "2025.1.0"
 dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-aspectj")
+    implementation("org.springframework.boot:spring-boot-micrometer-tracing-opentelemetry")
+    implementation("org.springframework.boot:spring-boot-zipkin")
     implementation("io.micrometer:micrometer-tracing-bridge-otel")
     implementation("io.opentelemetry:opentelemetry-exporter-zipkin")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
