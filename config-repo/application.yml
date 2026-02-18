@@ -7,5 +7,7 @@ logging:
   level:
     root: INFO
     dev.dead: INFO
-management.zipkin.tracing.endpoint: http://zipkin-server:9411/api/v2/spans
+# Spring Boot 4: Zipkin export (used by service-a, service-b, config-server with OTel)
+management.tracing.export.zipkin.endpoint: http://zipkin-server:9411/api/v2/spans
+management.tracing.export.zipkin.enabled: true
 management.tracing.sampling.probability: 1.0

@@ -7,7 +7,7 @@ services:
     mem_limit: 1024m
 
     environment:
-      - STORAGE_TYP=mem
+      - STORAGE_TYPE=mem
 
   service-a:
     build: ./service-a
