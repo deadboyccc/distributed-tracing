@@ -1,4 +1,14 @@
 services:
+  zipkin-server:
+    image: openzipkin/zipkin:3.5.0
+    restart: always
+    ports:
+      - "9411:9411"
+    mem_limit: 1024m
+
+    environment:
+      - STORAGE_TYP=mem
+
   service-a:
     build: ./service-a
     ports:

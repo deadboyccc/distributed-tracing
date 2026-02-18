@@ -6,3 +6,5 @@ test:
 logging:
   level:
     dev.dead: TRACE
+management.zipkin.tracing.endpoint: http://zipkin-server:9411/api/v2/spans
+management.tracing.sampling.probability: 1.0

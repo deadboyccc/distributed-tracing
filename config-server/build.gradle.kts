@@ -21,6 +21,8 @@ repositories {
 extra["springCloudVersion"] = "2025.1.0"
 
 dependencies {
+    implementation("io.micrometer:micrometer-tracing-bridge-otel")
+    implementation("io.opentelemetry:opentelemetry-exporter-zipkin")
     implementation("org.springframework.cloud:spring-cloud-config-server")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
