@@ -25,7 +25,7 @@ public class ServiceAApplication {
 
 @RestController
 class ServiceAController {
-    @GetMapping
+    @GetMapping("/")
     public String serviceA() {
         return "Hello from Service A!";
     }
