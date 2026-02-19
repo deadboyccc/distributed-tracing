@@ -1,6 +1,19 @@
 spring:
   application:
     name: service-a
+  cloud:
+    stream:
+      kafka:
+        binder:
+          # Use the Docker service name and the internal port
+          brokers: kafka:9094
+      source: serviceA
+      bindings:
+        serviceA-out-0:
+          destination: Event.raw
+          content-type: application/json
+          producer:
+            partition-key-expression: payload.eventId
 
 server:
   port: 8080

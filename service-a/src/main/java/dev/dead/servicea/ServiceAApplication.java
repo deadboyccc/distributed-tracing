@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.info.BuildProperties;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import org.springframework.web.client.RestClient;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.function.Supplier;
 
 @Slf4j
@@ -51,6 +53,7 @@ public class ServiceAApplication {
 class ServiceAController {
     private final MyComponent myComponent;
     private final RestClient restClient;
+    private final StreamBridge streamBridge;
 
 
     @GetMapping("/")
@@ -75,6 +78,8 @@ class ServiceAController {
                     return resp.getBody();
                 });
         // use spring cloud stream to send message to service B
+        streamBridge.send("serviceA-out-0", new Event(UUID.randomUUID(),
+                "Hello from Service A Through Stream Bridge!"));
 
         return "Hello from Service A: IP " + Inet4Address.getLocalHost()
                 .getHostAddress() +
@@ -137,4 +142,7 @@ class BuildInfoObservationFilter implements ObservationFilter {
                 Objects.requireNonNull(buildProperties.getVersion()));
         return context.addLowCardinalityKeyValue(buildVersion);
     }
+}
+
+record Event(UUID eventId, String message) {
 }

@@ -23,6 +23,8 @@ services:
         condition: service_healthy  # Ensures service-a waits for the healthcheck to pass
       zipkin-server:
         condition: service_healthy  # Ensures service-a waits for the healthcheck to pass
+      kafka:
+        condition: service_healthy # Ensures service-a waits for Kafka to be healthy before starting
 
   service-b:
     build: ./service-b
@@ -62,3 +64,25 @@ services:
     depends_on:
       zipkin-server:
         condition: service_healthy
+  kafka:
+    image: apache/kafka:latest
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      - KAFKA_NODE_ID=1
+      - KAFKA_PROCESS_ROLES=broker,controller
+      - KAFKA_CONTROLLER_QUORUM_VOTERS=1@localhost:9093
+      - KAFKA_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      # Logic: 9092 for your Mac, 9094 for other Docker containers
+      - KAFKA_LISTENERS=EXTERNAL://:9092,INTERNAL://:9094,CONTROLLER://:9093
+      - KAFKA_ADVERTISED_LISTENERS=EXTERNAL://localhost:9092,INTERNAL://kafka:9094
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=EXTERNAL:PLAINTEXT,INTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
+      - KAFKA_INTER_BROKER_LISTENER_NAME=INTERNAL
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+    healthcheck:
+      # This ensures the port is actually open before other services start
+      test: [ "CMD", "nc", "-z", "localhost", "9094" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
