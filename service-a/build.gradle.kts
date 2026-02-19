@@ -53,3 +53,7 @@ dependencyManagement {
     mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
   }
 }
+// log build version
+springBoot {
+    buildInfo()
+}

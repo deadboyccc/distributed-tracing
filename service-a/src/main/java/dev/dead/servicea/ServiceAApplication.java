@@ -1,11 +1,14 @@
 package dev.dead.servicea;
 
+import io.micrometer.common.KeyValue;
 import io.micrometer.observation.Observation;
+import io.micrometer.observation.ObservationFilter;
 import io.micrometer.observation.ObservationRegistry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +19,7 @@ import org.springframework.web.client.RestClient;
 
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 @Slf4j
@@ -115,5 +119,20 @@ class MyComponent {
                 .lowCardinalityKeyValue(lowCardinalityKey, lowCardinalityValue)
                 .highCardinalityKeyValue(highCardinalityKey, highCardinalityValue)
                 .observe(supplier);
+    }
+}
+
+class BuildInfoObservationFilter implements ObservationFilter {
+    private final BuildProperties buildProperties;
+
+    public BuildInfoObservationFilter(BuildProperties buildProperties) {
+        this.buildProperties = buildProperties;
+    }
+
+    @Override
+    public Observation.Context map(final Observation.Context context) {
+        KeyValue buildVersion = KeyValue.of("build.version",
+                Objects.requireNonNull(buildProperties.getVersion()));
+        return context.addLowCardinalityKeyValue(buildVersion);
     }
 }
