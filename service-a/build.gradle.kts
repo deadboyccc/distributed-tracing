@@ -27,7 +27,7 @@ repositories {
 
 extra["springCloudVersion"] = "2025.1.0"
 dependencies {
-
+    implementation("org.springframework.cloud:spring-cloud-starter-stream-kafka")
     implementation("org.springframework.boot:spring-boot-starter-aspectj")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-micrometer-tracing-opentelemetry")

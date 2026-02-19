@@ -74,6 +74,8 @@ class ServiceAController {
                             .toEntity(String.class);
                     return resp.getBody();
                 });
+        // use spring cloud stream to send message to service B
+
         return "Hello from Service A: IP " + Inet4Address.getLocalHost()
                 .getHostAddress() +
                 " - - - - - response from service B : " +
